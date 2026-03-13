@@ -109,6 +109,7 @@ nav{background:var(--black);display:flex;align-items:center;justify-content:spac
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
+<style id="auth-hide">body{visibility:hidden}</style>
 <nav>
   <div class="nav-logo">
     <span class="logo-txt">DARKSIDE<span>®</span></span>
@@ -359,24 +360,38 @@ new Chart(document.getElementById('precoD2cChart'),{type:'line',data:{labels:mes
 </script>
 <script>
 (function(){
-  document.addEventListener("DOMContentLoaded", function(){
-    netlifyIdentity.on("init", function(user){
-      if(!user){
-        document.body.style.display = "none";
-        netlifyIdentity.open();
+  var style = document.getElementById('auth-hide');
+  function show(){ if(style) style.remove(); }
+
+  function init(){
+    if(typeof netlifyIdentity === 'undefined'){
+      // fora do Netlify (dev local) — mostra direto
+      show(); return;
+    }
+    netlifyIdentity.on('init', function(user){
+      if(user){ show(); }
+      else {
+        netlifyIdentity.open('login');
       }
     });
-    netlifyIdentity.on("login", function(){
-      document.body.style.display = "";
+    netlifyIdentity.on('login', function(){
+      show();
       netlifyIdentity.close();
     });
-    netlifyIdentity.on("logout", function(){
-      document.body.style.display = "none";
-      netlifyIdentity.open();
+    netlifyIdentity.on('error', function(){
+      // fallback: se Identity falhar, mostra mesmo assim
+      show();
     });
-    netlifyIdentity.init();
-  });
+    netlifyIdentity.init({ container: '#netlify-modal' });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
 </script>
+<div id="netlify-modal"></div>
 </body>
 </html>
