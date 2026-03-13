@@ -106,6 +106,7 @@ nav{background:var(--black);display:flex;align-items:center;justify-content:spac
 .btn-back{background:var(--black);color:#fff;border:none;font-family:var(--fm);font-size:11px;letter-spacing:.1em;padding:10px 20px;border-radius:3px;cursor:pointer;text-transform:uppercase;}
 .btn-back:hover{background:#333;}
 </style>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
 <nav>
@@ -355,6 +356,27 @@ new Chart(document.getElementById('precoChart'),{type:'line',data:{labels:meses,
 // Jan=67.77 Fev=55.28 Mar=25.30 Abr=61.60 Mai=45.31 Jun=32.39 Jul=66.75 Ago=65.90 Set=19.50 Out=34.95 Nov=37.74 Dez=63.22
 const pmD2C=[67.77,55.28,25.30,61.60,45.31,32.39,66.75,65.90,19.50,34.95,37.74,63.22];
 new Chart(document.getElementById('precoD2cChart'),{type:'line',data:{labels:meses,datasets:[{label:'Preço de Capa',data:Array(12).fill(84.90),borderColor:'#e0e0e0',borderDash:[4,4],borderWidth:1.5,pointRadius:0,fill:false},{label:'Preço médio D2C',data:pmD2C,borderColor:'#CC0000',backgroundColor:'rgba(204,0,0,0.06)',borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#CC0000',tension:0.3,fill:true}]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>i[0].label,label:i=>`  ${i.dataset.label}: R$ ${Number(i.raw).toFixed(2)}`}}},scales:{x:{grid:{display:false},border:{color:'#e0e0e0'}},y:{min:0,max:100,grid:{color:'#f0f0f0'},border:{display:false},ticks:{callback:v=>'R$ '+v}}}}});
+</script>
+<script>
+(function(){
+  document.addEventListener("DOMContentLoaded", function(){
+    netlifyIdentity.on("init", function(user){
+      if(!user){
+        document.body.style.display = "none";
+        netlifyIdentity.open();
+      }
+    });
+    netlifyIdentity.on("login", function(){
+      document.body.style.display = "";
+      netlifyIdentity.close();
+    });
+    netlifyIdentity.on("logout", function(){
+      document.body.style.display = "none";
+      netlifyIdentity.open();
+    });
+    netlifyIdentity.init();
+  });
+})();
 </script>
 </body>
 </html>
