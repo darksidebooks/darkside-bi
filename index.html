@@ -109,7 +109,6 @@ nav{background:var(--black);display:flex;align-items:center;justify-content:spac
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
-<style id="auth-hide">body{visibility:hidden}</style>
 <nav>
   <div class="nav-logo">
     <span class="logo-txt">DARKSIDE<span>®</span></span>
@@ -358,40 +357,86 @@ new Chart(document.getElementById('precoChart'),{type:'line',data:{labels:meses,
 const pmD2C=[67.77,55.28,25.30,61.60,45.31,32.39,66.75,65.90,19.50,34.95,37.74,63.22];
 new Chart(document.getElementById('precoD2cChart'),{type:'line',data:{labels:meses,datasets:[{label:'Preço de Capa',data:Array(12).fill(84.90),borderColor:'#e0e0e0',borderDash:[4,4],borderWidth:1.5,pointRadius:0,fill:false},{label:'Preço médio D2C',data:pmD2C,borderColor:'#CC0000',backgroundColor:'rgba(204,0,0,0.06)',borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#CC0000',tension:0.3,fill:true}]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>i[0].label,label:i=>`  ${i.dataset.label}: R$ ${Number(i.raw).toFixed(2)}`}}},scales:{x:{grid:{display:false},border:{color:'#e0e0e0'}},y:{min:0,max:100,grid:{color:'#f0f0f0'},border:{display:false},ticks:{callback:v=>'R$ '+v}}}}});
 </script>
+
+<!-- LOGIN OVERLAY -->
+<div id="login-overlay" style="
+  display:none;
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:#0a0a0a;
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:24px;
+">
+  <div style="text-align:center;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:3px;color:#fff;">
+      DARKSIDE<span style="color:#CC0000">®</span>
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;color:#555;margin-top:4px;text-transform:uppercase;">
+      BI · Acesso Restrito
+    </div>
+  </div>
+  <button id="login-btn" style="
+    background:transparent;
+    border:1px solid #CC0000;
+    color:#CC0000;
+    font-family:'DM Mono',monospace;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    padding:12px 32px;
+    border-radius:3px;
+    cursor:pointer;
+  ">Entrar</button>
+  <div style="font-family:'DM Mono',monospace;font-size:10px;color:#333;">
+    Solicite acesso ao administrador
+  </div>
+</div>
+
 <script>
 (function(){
-  var style = document.getElementById('auth-hide');
-  function show(){ if(style) style.remove(); }
+  var overlay = document.getElementById('login-overlay');
+  var loginBtn = document.getElementById('login-btn');
 
-  function init(){
-    if(typeof netlifyIdentity === 'undefined'){
-      // fora do Netlify (dev local) — mostra direto
-      show(); return;
+  function showOverlay(){ overlay.style.display = 'flex'; }
+  function hideOverlay(){ overlay.style.display = 'none'; }
+
+  // Se não estiver no Netlify (ex: dev local), não bloqueia
+  if(typeof netlifyIdentity === 'undefined'){
+    hideOverlay(); return;
+  }
+
+  loginBtn.addEventListener('click', function(){
+    netlifyIdentity.open('login');
+  });
+
+  netlifyIdentity.on('init', function(user){
+    if(!user){ showOverlay(); }
+    else { hideOverlay(); }
+  });
+
+  netlifyIdentity.on('login', function(user){
+    hideOverlay();
+    netlifyIdentity.close();
+  });
+
+  netlifyIdentity.on('logout', function(){
+    showOverlay();
+  });
+
+  // Timeout de segurança: se Identity não inicializar em 5s, libera o acesso
+  setTimeout(function(){
+    if(overlay.style.display === 'none') return;
+    if(!netlifyIdentity.currentUser()){
+      // ainda não inicializou — tenta de novo
+      netlifyIdentity.init();
     }
-    netlifyIdentity.on('init', function(user){
-      if(user){ show(); }
-      else {
-        netlifyIdentity.open('login');
-      }
-    });
-    netlifyIdentity.on('login', function(){
-      show();
-      netlifyIdentity.close();
-    });
-    netlifyIdentity.on('error', function(){
-      // fallback: se Identity falhar, mostra mesmo assim
-      show();
-    });
-    netlifyIdentity.init({ container: '#netlify-modal' });
-  }
+  }, 5000);
 
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  netlifyIdentity.init();
 })();
 </script>
-<div id="netlify-modal"></div>
+
 </body>
 </html>
