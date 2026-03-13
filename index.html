@@ -358,7 +358,6 @@ const pmD2C=[67.77,55.28,25.30,61.60,45.31,32.39,66.75,65.90,19.50,34.95,37.74,6
 new Chart(document.getElementById('precoD2cChart'),{type:'line',data:{labels:meses,datasets:[{label:'Preço de Capa',data:Array(12).fill(84.90),borderColor:'#e0e0e0',borderDash:[4,4],borderWidth:1.5,pointRadius:0,fill:false},{label:'Preço médio D2C',data:pmD2C,borderColor:'#CC0000',backgroundColor:'rgba(204,0,0,0.06)',borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#CC0000',tension:0.3,fill:true}]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>i[0].label,label:i=>`  ${i.dataset.label}: R$ ${Number(i.raw).toFixed(2)}`}}},scales:{x:{grid:{display:false},border:{color:'#e0e0e0'}},y:{min:0,max:100,grid:{color:'#f0f0f0'},border:{display:false},ticks:{callback:v=>'R$ '+v}}}}});
 </script>
 
-<!-- LOGIN OVERLAY -->
 <div id="login-overlay" style="
   display:none;
   position:fixed;top:0;left:0;width:100%;height:100%;
@@ -402,37 +401,42 @@ new Chart(document.getElementById('precoD2cChart'),{type:'line',data:{labels:mes
   function showOverlay(){ overlay.style.display = 'flex'; }
   function hideOverlay(){ overlay.style.display = 'none'; }
 
-  // Se não estiver no Netlify (ex: dev local), não bloqueia
-  if(typeof netlifyIdentity === 'undefined'){
-    hideOverlay(); return;
-  }
+  // Fora do Netlify (dev local) — libera direto
+  if(typeof netlifyIdentity === 'undefined'){ return; }
 
   loginBtn.addEventListener('click', function(){
     netlifyIdentity.open('login');
   });
 
+  // Detecta token de convite ou recuperação de senha na URL
+  var hash = window.location.hash;
+  var isInvite    = hash.indexOf('invite_token=')    > -1;
+  var isRecovery  = hash.indexOf('recovery_token=')  > -1;
+  var isConfirm   = hash.indexOf('confirmation_token=') > -1;
+
   netlifyIdentity.on('init', function(user){
-    if(!user){ showOverlay(); }
-    else { hideOverlay(); }
+    if(user){
+      hideOverlay();
+    } else if(isInvite || isRecovery || isConfirm){
+      // Netlify já abre o modal automaticamente para esses fluxos
+      hideOverlay(); // mostra o fundo enquanto o modal carrega
+    } else {
+      showOverlay();
+    }
   });
 
-  netlifyIdentity.on('login', function(user){
+  netlifyIdentity.on('login', function(){
     hideOverlay();
     netlifyIdentity.close();
+    // Limpa o hash da URL após login por convite
+    if(window.history && window.history.replaceState){
+      window.history.replaceState(null, '', window.location.pathname);
+    }
   });
 
   netlifyIdentity.on('logout', function(){
     showOverlay();
   });
-
-  // Timeout de segurança: se Identity não inicializar em 5s, libera o acesso
-  setTimeout(function(){
-    if(overlay.style.display === 'none') return;
-    if(!netlifyIdentity.currentUser()){
-      // ainda não inicializou — tenta de novo
-      netlifyIdentity.init();
-    }
-  }, 5000);
 
   netlifyIdentity.init();
 })();
