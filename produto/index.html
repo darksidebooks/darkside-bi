@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DarkSide BI — Pedra Papel Tesoura 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--black:#0a0a0a;--red:#CC0000;--white:#fff;--g100:#f4f4f4;--g200:#e8e8e8;--g400:#999;--g600:#555;--g800:#222;--border:#e0e0e0;--fd:'Bebas Neue',sans-serif;--fb:'DM Sans',sans-serif;--fm:'DM Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--g100);font-family:var(--fb);color:var(--black);}
+nav{background:var(--black);display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:56px;position:sticky;top:0;z-index:100;}
+.nav-logo{display:flex;align-items:center;gap:12px;}
+.logo-txt{font-family:var(--fd);font-size:26px;letter-spacing:2px;color:#fff;}.logo-txt span{color:var(--red);}
+.nav-badge{background:var(--red);color:#fff;font-family:var(--fm);font-size:10px;letter-spacing:.12em;padding:3px 8px;border-radius:2px;text-transform:uppercase;}
+.nav-badge-audit{background:#16a34a;color:#fff;font-family:var(--fm);font-size:10px;letter-spacing:.12em;padding:3px 8px;border-radius:2px;text-transform:uppercase;}
+.nav-right{display:flex;gap:14px;align-items:center;}
+.nav-meta{font-family:var(--fm);font-size:11px;color:var(--g400);}
+.btn-cob{background:transparent;border:1px solid var(--red);color:var(--red);font-family:var(--fm);font-size:10px;letter-spacing:.1em;padding:6px 14px;border-radius:3px;cursor:pointer;text-transform:uppercase;transition:all .2s;}
+.btn-cob:hover{background:var(--red);color:#fff;}
+.page{max-width:1120px;margin:0 auto;padding:24px 24px 60px;}
+.book-header{background:var(--black);border-radius:8px;padding:26px 32px;margin-bottom:18px;position:relative;overflow:hidden;}
+.book-header::after{content:'';position:absolute;bottom:0;right:0;width:200px;height:100%;background:linear-gradient(90deg,transparent,rgba(204,0,0,0.05));pointer-events:none;}
+.badge-row{display:flex;gap:8px;margin-bottom:10px;}
+.badge{font-family:var(--fm);font-size:10px;letter-spacing:.1em;padding:3px 9px;border-radius:2px;text-transform:uppercase;font-weight:500;}
+.b-brand{background:var(--red);color:#fff;}.b-period{background:#1e1e1e;color:var(--g400);border:1px solid #333;}.b-ean{background:#1e1e1e;color:var(--g400);border:1px solid #333;font-size:9px;}
+.b-audit{background:#14532d;color:#86efac;border:1px solid #166534;font-size:9px;}
+.book-title{font-family:var(--fd);font-size:38px;letter-spacing:.03em;color:#fff;line-height:1;margin-bottom:4px;}
+.book-author{font-size:13px;color:var(--g400);margin-bottom:22px;}
+.abc-row{display:flex;gap:10px;}
+.abc-blk{background:#141414;border:1px solid #2a2a2a;border-radius:6px;padding:13px 18px;min-width:135px;}
+.abc-lbl{font-family:var(--fm);font-size:9px;letter-spacing:.12em;color:var(--g600);text-transform:uppercase;margin-bottom:5px;}
+.abc-lt{font-family:var(--fd);font-size:48px;line-height:1;margin-bottom:3px;}.abc-lt.A{color:#22c55e;}
+.abc-pos{font-family:var(--fm);font-size:11px;color:var(--g400);}.abc-pos span{color:#fff;}
+.sec-lbl{font-family:var(--fm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--g600);margin-bottom:10px;padding-left:2px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.mb{margin-bottom:12px;}.mb2{margin-bottom:20px;}
+.kpi-tot{border-radius:8px;padding:26px 32px;background:#fff;}
+.kpi-tot.bt{border-top:4px solid var(--black);}.kpi-tot.rt{border-top:4px solid var(--red);}
+.kpi-tot-lbl{font-family:var(--fm);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--g600);margin-bottom:8px;}
+.kpi-tot-val{font-family:var(--fd);font-size:52px;line-height:1;}
+.kpi-tot-sub{font-family:var(--fm);font-size:11px;color:var(--g400);margin-top:4px;}
+.kpi-card{background:#fff;border-radius:8px;border:1px solid var(--border);padding:18px 20px;}
+.kpi-ch{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}.db{background:var(--black);}.dr{background:var(--red);}
+.kpi-ch-lbl{font-family:var(--fm);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--g600);}
+.kpi-sub{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--g400);margin-bottom:5px;}
+.kpi-val{font-family:var(--fd);font-size:30px;line-height:1;}
+.kpi-shr{font-family:var(--fm);font-size:10px;color:var(--g400);margin-top:3px;}
+.donut-card{background:#fff;border-radius:8px;border:1px solid var(--border);padding:22px 26px;display:flex;align-items:center;gap:28px;}
+.dw{position:relative;width:92px;height:92px;flex-shrink:0;}.dw svg{width:100%;height:100%;}
+.dc{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.dc-val{font-family:var(--fd);font-size:20px;line-height:1;}.dc-sub{font-family:var(--fm);font-size:8px;color:var(--g400);}
+.dleg{flex:1;}.dleg-title{font-family:var(--fm);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--g600);margin-bottom:12px;}
+.li{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+.ll{display:flex;align-items:center;gap:8px;}.ldot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.ln{font-size:12px;font-weight:500;}.lv{font-family:var(--fm);font-size:10px;color:var(--g400);}
+.lpct{font-family:var(--fm);font-size:12px;font-weight:600;}
+.chart-card{background:#fff;border-radius:8px;border:1px solid var(--border);padding:22px 26px;}
+.ch-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.ch-title{font-family:var(--fm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--g600);}
+.ch-leg{display:flex;gap:16px;}
+.ch-li{display:flex;align-items:center;gap:6px;font-family:var(--fm);font-size:10px;color:var(--g600);}
+.ll-line{width:18px;height:2px;border-radius:1px;}
+.geo-row{margin-bottom:7px;display:flex;align-items:center;gap:10px;}
+.geo-est{font-family:var(--fm);font-size:11px;font-weight:500;width:28px;color:var(--black);flex-shrink:0;}
+.geo-bw{flex:1;height:14px;background:var(--g200);border-radius:3px;overflow:hidden;}
+.geo-b{height:100%;border-radius:3px;}
+.geo-un{font-family:var(--fm);font-size:11px;color:var(--g600);width:60px;text-align:right;flex-shrink:0;}
+.conc-blk{margin-bottom:14px;}
+.conc-lbl{font-family:var(--fm);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--g400);margin-bottom:6px;}
+.conc-pct{font-family:var(--fd);font-size:40px;line-height:1;margin-bottom:6px;}
+.conc-bw{height:8px;background:var(--g200);border-radius:4px;margin-bottom:4px;}
+.conc-b{height:8px;border-radius:4px;}.conc-b.k{background:var(--black);}.conc-b.r{background:var(--red);}.conc-b.g{background:#888;}
+.conc-sub{font-family:var(--fm);font-size:10px;color:var(--g400);}
+.divider{border:none;border-top:1px solid var(--border);margin:14px 0;}
+.preco-hi{background:var(--g100);border-radius:6px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.ph-lbl{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--g600);margin-bottom:3px;}
+.ph-val{font-family:var(--fd);font-size:28px;line-height:1;}.ph-val.r{color:var(--red);}.ph-val.g{color:#16a34a;}
+.tbl-card{background:#fff;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.tbl-head{background:var(--black);padding:12px 22px;display:grid;grid-template-columns:36px 1fr 1fr 100px 120px;gap:10px;}
+.th{font-family:var(--fm);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--g400);}.th.r{text-align:right;}
+.trow{display:grid;grid-template-columns:36px 1fr 1fr 100px 120px;gap:10px;padding:12px 22px;border-bottom:1px solid var(--border);align-items:center;transition:background .15s;}
+.trow:last-child{border-bottom:none;}.trow:hover{background:var(--g100);}
+.tr-rank{font-family:var(--fd);font-size:18px;color:var(--g400);}.tr-rank.top{color:var(--red);}
+.tr-grp{font-weight:600;font-size:13px;}.tr-obs{font-size:12px;color:var(--g600);}
+.tr-un{font-family:var(--fm);font-size:13px;font-weight:500;text-align:right;}
+.tr-rv{font-family:var(--fm);font-size:11px;color:var(--g600);text-align:right;}
+.mbar-w{height:3px;background:var(--g200);border-radius:2px;margin-top:4px;}
+.mbar{height:3px;border-radius:2px;}
+.note{font-family:var(--fm);font-size:10px;color:var(--g400);margin-top:10px;line-height:1.6;}
+.audit-note{font-family:var(--fm);font-size:10px;color:#16a34a;margin-top:10px;line-height:1.6;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:4px;padding:8px 12px;}
+.dash-ft{display:flex;justify-content:space-between;align-items:center;padding-top:18px;border-top:1px solid var(--border);margin-top:8px;}
+.ft-src{font-family:var(--fm);font-size:10px;color:var(--g400);}
+/* COBERTURA PAGE */
+#page-cob{display:none;}
+.cob-wrap{background:#fff;border-radius:8px;border:2px dashed var(--border);padding:60px 40px;text-align:center;margin:24px 0;}
+.cob-icon{font-size:48px;margin-bottom:16px;}
+.cob-title{font-family:var(--fd);font-size:28px;margin-bottom:10px;}
+.cob-desc{font-size:14px;color:var(--g600);line-height:1.7;max-width:480px;margin:0 auto 24px;}
+.cob-kpis{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;}
+.cob-kpi{background:var(--g100);border-radius:8px;padding:16px 22px;font-family:var(--fm);font-size:11px;color:#555;text-align:center;}
+.cob-kpi strong{display:block;font-size:22px;margin-top:6px;color:var(--black);}
+.btn-back{background:var(--black);color:#fff;border:none;font-family:var(--fm);font-size:11px;letter-spacing:.1em;padding:10px 20px;border-radius:3px;cursor:pointer;text-transform:uppercase;}
+.btn-back:hover{background:#333;}
+</style>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">
+    <span class="logo-txt">DARKSIDE<span>®</span></span>
+    <span class="nav-badge">BI · Produto</span>
+    <span class="nav-badge-audit">✓ Auditado</span>
+  </div>
+  <div class="nav-right">
+    <a href="../index.html" style="font-family:'DM Mono',monospace;font-size:10px;color:#555;letter-spacing:.1em;text-decoration:none;border:1px solid #222;padding:5px 12px;border-radius:3px;transition:all .2s;" onmouseover="this.style.color='#fff';this.style.borderColor='#555'" onmouseout="this.style.color='#555';this.style.borderColor='#222'">← Home</a>
+    <span class="nav-meta">DADOS: DARKDATA · 14/03/2026</span>
+    <button class="btn-cob" onclick="showPage('cob')">📦 Cobertura de Estoque</button>
+  </div>
+</nav>
+
+<!-- PAGE PRINCIPAL -->
+<div id="page-main">
+<div class="page">
+
+  <div class="book-header mb2">
+    <div class="badge-row">
+      <span class="badge b-brand">Crime Scene</span>
+      <span class="badge b-period">Jan–Dez 2025</span>
+      <span class="badge b-ean">EAN 9786555983579</span>
+      <span class="badge b-audit">B2B + D2C auditado · Metabase · 14/03/2026</span>
+    </div>
+    <div class="book-title">Pedra Papel Tesoura</div>
+    <div class="book-author">Alice Feeney · Consolidado B2B + D2C</div>
+    <div class="abc-row">
+      <div class="abc-blk"><div class="abc-lbl">Curva B2B · 12m</div><div class="abc-lt A">A</div><div class="abc-pos"><span>#6</span> / 1.624 títulos</div></div>
+      <div class="abc-blk"><div class="abc-lbl">Curva D2C · 12m</div><div class="abc-lt A">A</div><div class="abc-pos"><span>#69</span> / 881 SKUs</div></div>
+      <div class="abc-blk"><div class="abc-lbl">Curva Geral · 12m</div><div class="abc-lt A">A</div><div class="abc-pos"><span>#7</span> / 1.645 títulos</div></div>
+    </div>
+  </div>
+
+  <div class="sec-lbl">Totais consolidados · 2025</div>
+  <div class="g2 mb">
+    <div class="kpi-tot bt"><div class="kpi-tot-lbl">Total Unidades Vendidas</div><div class="kpi-tot-val">26.203</div><div class="kpi-tot-sub">B2B 25.142 + D2C 1.061</div></div>
+    <div class="kpi-tot rt"><div class="kpi-tot-lbl">Receita Total</div><div class="kpi-tot-val">R$ 845K</div><div class="kpi-tot-sub">R$ 806.197 B2B + R$ 38.767 D2C</div></div>
+  </div>
+
+  <div class="sec-lbl">Breakdown por canal</div>
+  <div class="g4 mb2">
+    <div class="kpi-card"><div class="kpi-ch"><span class="dot db"></span><span class="kpi-ch-lbl">B2B</span></div><div class="kpi-sub">Unidades</div><div class="kpi-val">25.142</div><div class="kpi-shr">96,0% do total</div></div>
+    <div class="kpi-card"><div class="kpi-ch"><span class="dot dr"></span><span class="kpi-ch-lbl">D2C</span></div><div class="kpi-sub">Unidades</div><div class="kpi-val">1.061</div><div class="kpi-shr">4,0% do total</div></div>
+    <div class="kpi-card"><div class="kpi-ch"><span class="dot db"></span><span class="kpi-ch-lbl">B2B</span></div><div class="kpi-sub">Receita</div><div class="kpi-val">R$ 806K</div><div class="kpi-shr">95,4% da receita</div></div>
+    <div class="kpi-card"><div class="kpi-ch"><span class="dot dr"></span><span class="kpi-ch-lbl">D2C</span></div><div class="kpi-sub">Receita</div><div class="kpi-val">R$ 38,8K</div><div class="kpi-shr">4,6% da receita</div></div>
+  </div>
+
+  <div class="sec-lbl">Mix de canal</div>
+  <div class="g2 mb2">
+    <!-- Donut unidades: B2B 96.2%, D2C 3.8% — circunferência 232.5 -->
+    <div class="donut-card">
+      <div class="dw">
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="37" fill="none" stroke="#e8e8e8" stroke-width="10"/><circle cx="50" cy="50" r="37" fill="none" stroke="#0a0a0a" stroke-width="10" stroke-dasharray="223.2 232.5" stroke-dashoffset="0" transform="rotate(-90 50 50)"/><circle cx="50" cy="50" r="37" fill="none" stroke="#CC0000" stroke-width="10" stroke-dasharray="9.3 232.5" stroke-dashoffset="-223.2" transform="rotate(-90 50 50)"/></svg>
+        <div class="dc"><div class="dc-val">27K</div><div class="dc-sub">un</div></div>
+      </div>
+      <div class="dleg">
+        <div class="dleg-title">Share Unidades</div>
+        <div class="li"><div class="ll"><span class="ldot" style="background:#0a0a0a"></span><div><div class="ln">B2B</div><div class="lv">25.142 un</div></div></div><span class="lpct">96,0%</span></div>
+        <div class="li"><div class="ll"><span class="ldot" style="background:#CC0000"></span><div><div class="ln">D2C</div><div class="lv">1.061 un</div></div></div><span class="lpct">4,0%</span></div>
+      </div>
+    </div>
+    <!-- Donut receita: B2B 95.8%, D2C 4.2% — circunferência 232.5 -->
+    <div class="donut-card">
+      <div class="dw">
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="37" fill="none" stroke="#e8e8e8" stroke-width="10"/><circle cx="50" cy="50" r="37" fill="none" stroke="#0a0a0a" stroke-width="10" stroke-dasharray="221.8 232.5" stroke-dashoffset="0" transform="rotate(-90 50 50)"/><circle cx="50" cy="50" r="37" fill="none" stroke="#CC0000" stroke-width="10" stroke-dasharray="10.7 232.5" stroke-dashoffset="-221.8" transform="rotate(-90 50 50)"/></svg>
+        <div class="dc"><div class="dc-val">845K</div><div class="dc-sub">R$</div></div>
+      </div>
+      <div class="dleg">
+        <div class="dleg-title">Share Receita</div>
+        <div class="li"><div class="ll"><span class="ldot" style="background:#0a0a0a"></span><div><div class="ln">B2B</div><div class="lv">R$ 806.197</div></div></div><span class="lpct">95,4%</span></div>
+        <div class="li"><div class="ll"><span class="ldot" style="background:#CC0000"></span><div><div class="ln">D2C</div><div class="lv">R$ 38.767</div></div></div><span class="lpct">4,6%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-lbl">Linha do tempo semanal · Jan–Dez 2025</div>
+  <div class="chart-card mb2">
+    <div class="ch-head"><span class="ch-title">Unidades vendidas por semana</span>
+      <div class="ch-leg"><div class="ch-li"><div class="ll-line" style="background:#0a0a0a"></div>B2B</div><div class="ch-li"><div class="ll-line" style="background:#CC0000"></div>D2C</div></div>
+    </div>
+    <canvas id="tlChart" height="180"></canvas>
+  </div>
+
+  <div class="sec-lbl">Sazonalidade B2B · 2024 vs 2025</div>
+  <div class="chart-card mb2">
+    <div class="ch-head"><span class="ch-title">Unidades mensais — comparativo anual</span>
+      <div class="ch-leg"><div class="ch-li"><div class="ll-line" style="background:#0a0a0a"></div>2025</div><div class="ch-li"><div class="ll-line" style="background:#bbb;border-top:2px dashed #bbb;height:0;width:18px"></div>2024</div></div>
+    </div>
+    <canvas id="sazChart" height="155"></canvas>
+    <div class="note">ⓘ Livro lançado em abril/2024. Jan–Mar 2024 sem histórico.</div>
+  </div>
+
+  <div class="sec-lbl">Distribuição geográfica · Top 10 estados</div>
+  <div class="g2 mb2">
+    <div class="chart-card">
+      <div class="ch-head"><span class="ch-title">B2B por estado</span><div class="ch-leg"><div class="ch-li"><div class="ll-line" style="background:#0a0a0a"></div>Un</div></div></div>
+      <div id="geo-b2b"></div>
+    </div>
+    <div class="chart-card">
+      <div class="ch-head"><span class="ch-title">D2C por estado</span><div class="ch-leg"><div class="ch-li"><div class="ll-line" style="background:#CC0000"></div>Un</div></div></div>
+      <div id="geo-d2c"></div>
+    </div>
+  </div>
+
+  <div class="sec-lbl">Preço médio B2B &amp; concentração de canal</div>
+  <div class="g2 mb2">
+    <div class="chart-card">
+      <div class="ch-head"><span class="ch-title">Preço médio B2B vs preço de capa · 2025</span></div>
+      <div class="preco-hi">
+        <div><div class="ph-lbl">Preço de Capa</div><div class="ph-val">R$ 84,90</div></div>
+        <div style="text-align:center"><div class="ph-lbl">Desconto médio implícito</div><div class="ph-val r">~52%</div></div>
+        <div style="text-align:right"><div class="ph-lbl">Preço médio realizado</div><div class="ph-val g">R$ 41,09</div></div>
+      </div>
+      <canvas id="precoChart" height="195"></canvas>
+    </div>
+    <div class="chart-card" style="padding:22px 26px">
+      <div class="ch-head" style="margin-bottom:16px"><span class="ch-title">Concentração de canal B2B</span></div>
+      <div class="conc-blk">
+        <div class="conc-lbl">Dependência Amazon</div>
+        <div class="conc-pct">56,2%</div>
+        <div class="conc-bw"><div class="conc-b r" style="width:56.2%"></div></div>
+        <div class="conc-sub">14.116 un · único comprador · risco de concentração alto</div>
+      </div>
+      <hr class="divider">
+      <div class="conc-blk">
+        <div class="conc-lbl">Top 3 grupos (Amazon + A Página + Avulsos)</div>
+        <div class="conc-pct">82,8%</div>
+        <div class="conc-bw"><div class="conc-b k" style="width:82.8%"></div></div>
+        <div class="conc-sub">20.824 de 25.142 un · alta concentração</div>
+      </div>
+      <hr class="divider">
+      <div class="conc-blk">
+        <div class="conc-lbl">Demais 9 grupos somados</div>
+        <div class="conc-pct">17,2%</div>
+        <div class="conc-bw"><div class="conc-b g" style="width:17.2%"></div></div>
+        <div class="conc-sub">4.318 un · Leitura, Curitiba e outros</div>
+      </div>
+      <hr class="divider">
+      <div style="font-family:var(--fm);font-size:10px;color:var(--g400);line-height:1.7;">⚠ Amazon representa +56% do B2B. Perda deste canal afetaria diretamente 54% do volume total.</div>
+    </div>
+  </div>
+
+  <div class="sec-lbl">D2C · Preço médio unitário realizado por mês · 2025</div>
+  <div class="chart-card mb2">
+    <div class="ch-head">
+      <span class="ch-title">Preço médio D2C (selling_price) vs preço de capa · R$</span>
+      <div class="ch-leg">
+        <div class="ch-li"><div class="ll-line" style="background:#CC0000"></div>Preço médio D2C</div>
+        <div class="ch-li"><div class="ll-line" style="background:#e0e0e0;border-top:2px dashed #e0e0e0;height:0;width:18px"></div>Capa R$84,90</div>
+      </div>
+    </div>
+    <div class="preco-hi">
+      <div><div class="ph-lbl">Preço de Capa</div><div class="ph-val">R$ 84,90</div></div>
+      <div style="text-align:center"><div class="ph-lbl">Desconto médio anual</div><div class="ph-val r">~57%</div></div>
+      <div style="text-align:right"><div class="ph-lbl">Preço médio realizado D2C</div><div class="ph-val g">R$ 36,54</div></div>
+    </div>
+    <canvas id="precoD2cChart" height="160"></canvas>
+    <div class="audit-note">✓ Dados auditados · order_items_d2c · refid 82042_1_0_002 · selling_price × qty = R$ 38.766,71 · 1.061 un confirmadas</div>
+  </div>
+
+  <div class="sec-lbl">Top compradores B2B · 2025</div>
+  <div class="tbl-card mb2">
+    <div class="tbl-head"><div class="th">#</div><div class="th">Grupo</div><div class="th">Observação</div><div class="th r">Unidades</div><div class="th r">Receita</div></div>
+    <div class="trow"><div class="tr-rank top">1</div><div><div class="tr-grp">Amazon</div><div class="mbar-w"><div class="mbar" style="width:100%;background:#CC0000"></div></div></div><div class="tr-obs">Canal digital dominante</div><div class="tr-un">14.116</div><div class="tr-rv">R$ 468.823</div></div>
+    <div class="trow"><div class="tr-rank top">2</div><div><div class="tr-grp">A Página</div><div class="mbar-w"><div class="mbar" style="width:32.2%;background:#0a0a0a"></div></div></div><div class="tr-obs">Rede independente</div><div class="tr-un">4.541</div><div class="tr-rv">R$ 131.553</div></div>
+    <div class="trow"><div class="tr-rank">3</div><div><div class="tr-grp">Sem grupo</div><div class="mbar-w"><div class="mbar" style="width:10.9%;background:#0a0a0a"></div></div></div><div class="tr-obs">Avulsos / distribuidoras</div><div class="tr-un">1.545</div><div class="tr-rv">R$ 51.220</div></div>
+    <div class="trow"><div class="tr-rank">4</div><div><div class="tr-grp">Livraria Leitura</div><div class="mbar-w"><div class="mbar" style="width:15.3%;background:#0a0a0a"></div></div></div><div class="tr-obs">Maior rede do Brasil</div><div class="tr-un">2.167</div><div class="tr-rv">R$ 66.594</div></div>
+    <div class="trow"><div class="tr-rank">5</div><div><div class="tr-grp">Livrarias Curitiba</div><div class="mbar-w"><div class="mbar" style="width:7.7%;background:#0a0a0a"></div></div></div><div class="tr-obs">Rede regional Sul</div><div class="tr-un">1.085</div><div class="tr-rv">R$ 30.861</div></div>
+    <div class="trow"><div class="tr-rank">6</div><div><div class="tr-grp">DarkSide Books</div><div class="mbar-w"><div class="mbar" style="width:4.7%;background:#CC0000"></div></div></div><div class="tr-obs">Loja própria / venda direta</div><div class="tr-un">668</div><div class="tr-rv">R$ 23.347</div></div>
+    <div class="trow"><div class="tr-rank">7</div><div><div class="tr-grp">Boa Viagem</div><div class="mbar-w"><div class="mbar" style="width:1.4%;background:#0a0a0a"></div></div></div><div class="tr-obs">Distribuidora regional</div><div class="tr-un">192</div><div class="tr-rv">R$ 5.592</div></div>
+    <div class="trow"><div class="tr-rank">8</div><div><div class="tr-grp">Catavento</div><div class="mbar-w"><div class="mbar" style="width:0.9%;background:#0a0a0a"></div></div></div><div class="tr-obs">Distribuidora</div><div class="tr-un">131</div><div class="tr-rv">R$ 4.578</div></div>
+    <div class="trow"><div class="tr-rank">9</div><div><div class="tr-grp">Livraria da Vila</div><div class="mbar-w"><div class="mbar" style="width:0.7%;background:#0a0a0a"></div></div></div><div class="tr-obs">Rede São Paulo</div><div class="tr-un">96</div><div class="tr-rv">R$ 3.287</div></div>
+    <div class="trow"><div class="tr-rank">10</div><div><div class="tr-grp">Martins Fontes</div><div class="mbar-w"><div class="mbar" style="width:0.7%;background:#0a0a0a"></div></div></div><div class="tr-obs">Livraria técnica SP</div><div class="tr-un">93</div><div class="tr-rv">R$ 3.072</div></div>
+  </div>
+
+  <div class="dash-ft">
+    <span class="ft-src">Fonte: Darkdata DB 3 · erp_exit_orders + order_items_d2c · Metabase · B2B+D2C auditado 14/03/2026</span>
+    <span class="ft-src">v3 · B2B+D2C auditado · 14 mar 2026</span>
+  </div>
+</div>
+</div>
+
+<!-- PAGE COBERTURA -->
+<div id="page-cob">
+<div class="page">
+  <div class="book-header mb2" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+    <div>
+      <div class="badge-row"><span class="badge b-brand">Crime Scene</span><span class="badge b-period">Visão Atual · Hoje</span></div>
+      <div class="book-title">Cobertura de Estoque</div>
+      <div class="book-author">Pedra Papel Tesoura · Últimos 90 dias + WMS atual</div>
+    </div>
+    <button class="btn-back" onclick="showPage('main')">← Voltar ao dashboard</button>
+  </div>
+  <div class="cob-wrap">
+    <div class="cob-icon">📦</div>
+    <div class="cob-title">Cálculo de Cobertura</div>
+    <div class="cob-desc">Esta página cruza o estoque atual do WMS com a média de vendas dos últimos 90 dias (B2B + D2C) para calcular dias de cobertura e data estimada de esgotamento.<br><br><strong>Só disponível quando a data final do período = hoje.</strong></div>
+    <div class="cob-kpis">
+      <div class="cob-kpi">📊 Média 90d B2B<strong>— un/sem</strong></div>
+      <div class="cob-kpi">🛒 Média 90d D2C<strong>— un/sem</strong></div>
+      <div class="cob-kpi">📦 Estoque WMS<strong>— un</strong></div>
+      <div class="cob-kpi">📅 Cobertura<strong>— dias</strong></div>
+    </div>
+    <button class="btn-back" onclick="showPage('main')">← Voltar ao dashboard</button>
+  </div>
+</div>
+</div>
+
+<script>
+function showPage(p){
+  document.getElementById('page-main').style.display=p==='main'?'block':'none';
+  document.getElementById('page-cob').style.display=p==='cob'?'block':'none';
+  window.scrollTo(0,0);
+}
+Chart.defaults.font.family='DM Mono';Chart.defaults.font.size=10;Chart.defaults.color='#999';
+const tt={backgroundColor:'#0a0a0a',titleColor:'#999',bodyColor:'#fff',padding:10,borderColor:'#333',borderWidth:1,titleFont:{family:'DM Mono',size:10},bodyFont:{family:'DM Mono',size:11}};
+
+// TIMELINE
+// D2C: derivado dos mensais auditados (1.061 un totais)
+// Jan=69 Fev=120 Mar=143 Abr=42 Mai=38 Jun=76 Jul=34 Ago=67 Set=117 Out=156 Nov=158 Dez=38
+const wkLbls=['Jan','','','','','Fev','','','','','Mar','','','','','Abr','','','','','Mai','','','','','Jun','','','','','Jul','','','','','Ago','','','','','Set','','','','','Out','','','','','Nov','','','','','Dez','',''];
+const b2bW=[404,167,510,713,353,566,346,139,173,37,184,125,151,4246,259,96,1475,677,191,252,819,880,34,1801,423,170,107,172,205,752,176,170,77,540,408,243,99,196,1628,330,2605,1220,473,780,109,43,75,328,156,186,93,188,17];
+const d2cW=[17,17,18,17,30,30,30,30,35,36,36,36,10,10,11,11,9,9,10,10,18,19,19,20,8,8,9,9,16,16,17,18,27,28,30,32,37,38,40,41,37,38,41,42,9,9,10,10,0,0,0,0,0];
+new Chart(document.getElementById('tlChart'),{type:'line',data:{labels:wkLbls,datasets:[{label:'B2B',data:b2bW,borderColor:'#0a0a0a',backgroundColor:'rgba(10,10,10,0.06)',borderWidth:2,pointRadius:0,tension:0.3,fill:true,order:2},{label:'D2C',data:d2cW,borderColor:'#CC0000',backgroundColor:'rgba(204,0,0,0.08)',borderWidth:2,pointRadius:0,tension:0.3,fill:true,order:1}]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>`Semana ${i[0].dataIndex+1}`,label:i=>`  ${i.dataset.label}: ${i.raw.toLocaleString('pt-BR')} un`}}},scales:{x:{grid:{display:false},border:{color:'#e0e0e0'},ticks:{maxRotation:0}},y:{grid:{color:'#f0f0f0'},border:{display:false},ticks:{callback:v=>v>=1000?(v/1000).toFixed(1)+'k':v}}}}});
+
+// SAZONALIDADE
+const meses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const b25=[1954,1133,3712,2978,2276,2315,1334,1145,2156,5028,529,582];
+const b24=[0,0,0,1959,1416,874,1316,967,1582,3497,1180,1622];
+new Chart(document.getElementById('sazChart'),{type:'bar',data:{labels:meses,datasets:[{label:'2025',data:b25,backgroundColor:'#0a0a0a',borderRadius:3,order:2},{label:'2024',data:b24,backgroundColor:'rgba(0,0,0,0)',borderColor:'#bbb',borderWidth:2,type:'line',tension:0.3,pointRadius:3,pointBackgroundColor:'#bbb',order:1}]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>i[0].label,label:i=>`  ${i.dataset.label}: ${Number(i.raw).toLocaleString('pt-BR')} un`}}},scales:{x:{grid:{display:false},border:{color:'#e0e0e0'}},y:{grid:{color:'#f0f0f0'},border:{display:false},ticks:{callback:v=>v>=1000?(v/1000).toFixed(1)+'k':v}}}}});
+
+// GEO
+const gB2B=[{e:'SP',u:11760},{e:'PE',u:3716},{e:'MG',u:2686},{e:'RJ',u:2569},{e:'—',u:2197},{e:'RS',u:1175},{e:'PR',u:1170},{e:'DF',u:515},{e:'GO',u:132},{e:'BA',u:97}];
+const gD2C=[{e:'SP',u:419},{e:'RJ',u:108},{e:'MG',u:96},{e:'RS',u:90},{e:'PR',u:82},{e:'SC',u:75},{e:'BA',u:26},{e:'GO',u:26},{e:'PE',u:19},{e:'DF',u:17}];
+function renderGeo(id,data,cls){const mx=data[0].u;document.getElementById(id).innerHTML=data.map(d=>`<div class="geo-row"><div class="geo-est">${d.e}</div><div class="geo-bw"><div class="geo-b ${cls}" style="width:${(d.u/mx*100).toFixed(1)}%"></div></div><div class="geo-un">${d.u.toLocaleString('pt-BR')}</div></div>`).join('');}
+renderGeo('geo-b2b',gB2B,'geo-b2b-bar');
+renderGeo('geo-d2c',gD2C,'geo-d2c-bar');
+document.querySelectorAll('.geo-b2b-bar').forEach(el=>el.style.background='#0a0a0a');
+document.querySelectorAll('.geo-d2c-bar').forEach(el=>el.style.background='#CC0000');
+
+// PREÇO B2B
+const pm=[44.55,38.76,52.41,39.23,42.58,36.43,39.67,39.08,42.02,41.07,41.01,40.71];
+new Chart(document.getElementById('precoChart'),{type:'line',data:{labels:meses,datasets:[{label:'Preço de Capa',data:Array(12).fill(84.90),borderColor:'#e0e0e0',borderDash:[4,4],borderWidth:1.5,pointRadius:0,fill:false},{label:'Preço médio B2B',data:pm,borderColor:'#CC0000',backgroundColor:'rgba(204,0,0,0.06)',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#CC0000',tension:0.3,fill:true}]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>i[0].label,label:i=>`  ${i.dataset.label}: R$ ${Number(i.raw).toFixed(2)}`}}},scales:{x:{grid:{display:false},border:{color:'#e0e0e0'}},y:{min:0,max:100,grid:{color:'#f0f0f0'},border:{display:false},ticks:{callback:v=>'R$ '+v}}}}});
+
+// PREÇO D2C — dados reais auditados por mês
+// Jan=67.77 Fev=55.28 Mar=25.30 Abr=61.60 Mai=45.31 Jun=32.39 Jul=66.75 Ago=65.90 Set=19.50 Out=34.95 Nov=37.74 Dez=63.22
+const pmD2C=[67.77,55.28,25.30,61.60,45.31,32.39,66.75,65.90,19.50,34.95,37.74,63.22];
+new Chart(document.getElementById('precoD2cChart'),{type:'line',data:{labels:meses,datasets:[{label:'Preço de Capa',data:Array(12).fill(84.90),borderColor:'#e0e0e0',borderDash:[4,4],borderWidth:1.5,pointRadius:0,fill:false},{label:'Preço médio D2C',data:pmD2C,borderColor:'#CC0000',backgroundColor:'rgba(204,0,0,0.06)',borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#CC0000',tension:0.3,fill:true}]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>i[0].label,label:i=>`  ${i.dataset.label}: R$ ${Number(i.raw).toFixed(2)}`}}},scales:{x:{grid:{display:false},border:{color:'#e0e0e0'}},y:{min:0,max:100,grid:{color:'#f0f0f0'},border:{display:false},ticks:{callback:v=>'R$ '+v}}}}});
+</script>
+
+<div id="login-overlay" style="
+  display:none;
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:#0a0a0a;
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:24px;
+">
+  <div style="text-align:center;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:3px;color:#fff;">
+      DARKSIDE<span style="color:#CC0000">®</span>
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;color:#555;margin-top:4px;text-transform:uppercase;">
+      BI · Acesso Restrito
+    </div>
+  </div>
+  <button id="login-btn" style="
+    background:transparent;
+    border:1px solid #CC0000;
+    color:#CC0000;
+    font-family:'DM Mono',monospace;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    padding:12px 32px;
+    border-radius:3px;
+    cursor:pointer;
+  ">Entrar</button>
+  <div style="font-family:'DM Mono',monospace;font-size:10px;color:#333;">
+    Solicite acesso ao administrador
+  </div>
+</div>
+
+<script>
+(function(){
+  var overlay = document.getElementById('login-overlay');
+  var loginBtn = document.getElementById('login-btn');
+
+  function showOverlay(){ overlay.style.display = 'flex'; }
+  function hideOverlay(){ overlay.style.display = 'none'; }
+
+  // Fora do Netlify (dev local) — libera direto
+  if(typeof netlifyIdentity === 'undefined'){ return; }
+
+  loginBtn.addEventListener('click', function(){
+    netlifyIdentity.open('login');
+  });
+
+  // Detecta token de convite ou recuperação de senha na URL
+  var hash = window.location.hash;
+  var isInvite    = hash.indexOf('invite_token=')    > -1;
+  var isRecovery  = hash.indexOf('recovery_token=')  > -1;
+  var isConfirm   = hash.indexOf('confirmation_token=') > -1;
+
+  netlifyIdentity.on('init', function(user){
+    if(user){
+      hideOverlay();
+    } else if(isInvite || isRecovery || isConfirm){
+      // Netlify já abre o modal automaticamente para esses fluxos
+      hideOverlay(); // mostra o fundo enquanto o modal carrega
+    } else {
+      showOverlay();
+    }
+  });
+
+  netlifyIdentity.on('login', function(){
+    hideOverlay();
+    netlifyIdentity.close();
+    // Limpa o hash da URL após login por convite
+    if(window.history && window.history.replaceState){
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  });
+
+  netlifyIdentity.on('logout', function(){
+    showOverlay();
+  });
+
+  netlifyIdentity.init();
+})();
+</script>
+
+</body>
+</html>
