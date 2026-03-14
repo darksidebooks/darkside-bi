@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DarkSide BI — Treemap v1</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #f4f4f4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 24px; }
+.tm-root { display: flex; flex-direction: column; gap: 6px; max-width: 1100px; margin: 0 auto; }
+.tm-row  { display: flex; gap: 6px; }
+.tm-cell {
+  border-radius: 8px; padding: 10px 12px; cursor: pointer;
+  transition: opacity .15s; overflow: hidden; border: 0.5px solid transparent;
+}
+.tm-cell:hover { opacity: .82; }
+.tm-label { font-size: 12px; font-weight: 500; line-height: 1.3; }
+.tm-sub   { font-size: 11px; opacity: .72; margin-top: 2px; line-height: 1.4; }
+.tm-badge { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 20px; margin-top: 5px; font-weight: 500; }
+.tm-chips { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 6px; }
+.tm-chip  { font-size: 10px; padding: 1px 6px; border-radius: 10px; opacity: .8; }
+.built  { background: #EAF3DE; border-color: #97C459; color: #27500A; }
+.built .tm-badge { background: #97C459; color: #173404; }
+.built .tm-chip  { background: #C0DD97; color: #27500A; }
+.wip    { background: #FAEEDA; border-color: #EF9F27; color: #633806; }
+.wip .tm-badge { background: #EF9F27; color: #412402; }
+.wip .tm-chip  { background: #FAC775; color: #633806; }
+.plan   { background: #f0f0f0; border-color: #ccc; color: #555; }
+.plan .tm-badge { background: #ccc; color: #555; }
+.plan .tm-chip  { background: #e0e0e0; color: #666; }
+.infra  { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
+.infra .tm-badge { background: #85B7EB; color: #042C53; }
+.infra .tm-chip  { background: #B5D4F4; color: #0C447C; }
+.data   { background: #EEEDFE; border-color: #AFA9EC; color: #3C3489; }
+.data .tm-badge { background: #AFA9EC; color: #26215C; }
+.data .tm-chip  { background: #CECBF6; color: #3C3489; }
+.head   { background: #111; border-color: #333; color: #fff; }
+.head .tm-badge { background: #CC1E1E; color: #fff; }
+.head .tm-chip  { background: #222; color: #aaa; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; padding: 8px 4px 0; font-size: 11px; color: #888; align-items: center; }
+.leg-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 4px; }
+.sec-lbl { font-size: 10px; font-weight: 500; color: #999; padding: 2px 2px 0; letter-spacing: .06em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+<div class="tm-root">
+
+  <div class="tm-row">
+    <div class="tm-cell head" style="flex:1">
+      <div class="tm-label" style="font-size:14px;">DarkSide BI</div>
+      <div class="tm-sub">Sistema de inteligência de negócio · board · v1</div>
+      <div style="display:flex;gap:6px;margin-top:6px;">
+        <span class="tm-badge">BI · Produto</span>
+        <span class="tm-badge" style="background:#1a1a1a;color:#aaa;">gleeful-dasik-1f4844.netlify.app</span>
+      </div>
+    </div>
+    <div class="tm-cell infra" style="flex:0 0 200px">
+      <div class="tm-label">Home</div>
+      <div class="tm-sub">ponto de entrada</div>
+      <div class="tm-chips">
+        <span class="tm-chip">search de produto</span>
+        <span class="tm-chip">cards de módulos</span>
+        <span class="tm-chip">alerta ruptura preview</span>
+      </div>
+      <span class="tm-badge" style="margin-top:6px;">a construir</span>
+    </div>
+  </div>
+
+  <div class="tm-row" style="align-items:stretch;">
+    <div style="flex:1.8;display:flex;flex-direction:column;gap:6px;">
+      <div class="sec-lbl">Módulos</div>
+      <div class="tm-row" style="flex:1;">
+        <div class="tm-cell built" style="flex:1.4">
+          <div class="tm-label" style="font-size:13px;">Raio-X de Produto</div>
+          <div class="tm-sub">dashboard completo por título</div>
+          <div class="tm-chips">
+            <span class="tm-chip">KPIs B2B + D2C</span>
+            <span class="tm-chip">timeline semanal</span>
+            <span class="tm-chip">sazonalidade</span>
+            <span class="tm-chip">distribuição geo</span>
+            <span class="tm-chip">preço médio</span>
+            <span class="tm-chip">concentração canal</span>
+            <span class="tm-chip">top compradores</span>
+            <span class="tm-chip">troca de livro</span>
+          </div>
+          <span class="tm-badge">construído · v3 auditado</span>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+          <div class="tm-cell built" style="flex:1">
+            <div class="tm-label">Reposição B2B</div>
+            <div class="tm-sub">app Node.js · 273 lojas</div>
+            <div class="tm-chips">
+              <span class="tm-chip">seletor de loja</span>
+              <span class="tm-chip">upload estoque</span>
+              <span class="tm-chip">engine R/A/B/P</span>
+              <span class="tm-chip">export Excel</span>
+            </div>
+            <span class="tm-badge">construído</span>
+          </div>
+          <div class="tm-cell wip">
+            <div class="tm-label">Cobertura Geral</div>
+            <div class="tm-sub">catálogo + ruptura</div>
+            <div class="tm-chips">
+              <span class="tm-chip">alerta ruptura</span>
+              <span class="tm-chip">visão catálogo</span>
+              <span class="tm-chip">receita em risco</span>
+            </div>
+            <span class="tm-badge">próximo</span>
+          </div>
+        </div>
+      </div>
+      <div class="tm-row">
+        <div class="tm-cell plan" style="flex:1">
+          <div class="tm-label">Ranking de Títulos</div>
+          <div class="tm-sub">top N por canal e período</div>
+          <span class="tm-badge">planejado</span>
+        </div>
+        <div class="tm-cell plan" style="flex:1">
+          <div class="tm-label">Sell-out por Rede</div>
+          <div class="tm-sub">performance por grupo econômico</div>
+          <span class="tm-badge">planejado</span>
+        </div>
+        <div class="tm-cell plan" style="flex:1">
+          <div class="tm-label">Lançamentos</div>
+          <div class="tm-sub">pipeline + 30/60/90 dias</div>
+          <span class="tm-badge">planejado</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:.7;display:flex;flex-direction:column;gap:6px;">
+      <div class="sec-lbl">Infraestrutura</div>
+      <div class="tm-cell infra">
+        <div class="tm-label">Netlify</div>
+        <div class="tm-sub">hosting + CI/CD</div>
+        <div class="tm-chips">
+          <span class="tm-chip">deploy automático</span>
+          <span class="tm-chip">Identity auth</span>
+          <span class="tm-chip">3 usuários</span>
+        </div>
+        <span class="tm-badge">ativo</span>
+      </div>
+      <div class="tm-cell infra">
+        <div class="tm-label">GitHub</div>
+        <div class="tm-sub">darksidebooks/darkside-bi</div>
+        <div class="tm-chips">
+          <span class="tm-chip">main branch</span>
+          <span class="tm-chip">skills/</span>
+          <span class="tm-chip">treemap/</span>
+        </div>
+        <span class="tm-badge">ativo</span>
+      </div>
+      <div class="tm-cell wip">
+        <div class="tm-label">Postgres direto</div>
+        <div class="tm-sub">RDS AWS · porta 5432</div>
+        <div class="tm-chips">
+          <span class="tm-chip">IP: 189.60.16.200</span>
+          <span class="tm-chip">sg bloqueado</span>
+        </div>
+        <span class="tm-badge">desbloqueio pendente</span>
+      </div>
+      <div class="tm-cell plan">
+        <div class="tm-label">Metabase</div>
+        <div class="tm-sub">transitório · database_id 3</div>
+        <span class="tm-badge">substituir por Postgres</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-lbl">Fontes de dados</div>
+  <div class="tm-row">
+    <div class="tm-cell data" style="flex:1.4">
+      <div class="tm-label">erp_exit_orders</div>
+      <div class="tm-sub">sell-out B2B · tipo_venda = ATACADO</div>
+      <div class="tm-chips">
+        <span class="tm-chip">faturamento</span>
+        <span class="tm-chip">volume</span>
+        <span class="tm-chip">grupo_loja</span>
+        <span class="tm-chip">25.142 un PPT ✓</span>
+      </div>
+    </div>
+    <div class="tm-cell data" style="flex:1.2">
+      <div class="tm-label">order_items_d2c</div>
+      <div class="tm-sub">sell-out D2C · selling_price × qty</div>
+      <div class="tm-chips">
+        <span class="tm-chip">refid</span>
+        <span class="tm-chip">centavos ÷100</span>
+        <span class="tm-chip">1.061 un PPT ✓</span>
+      </div>
+    </div>
+    <div class="tm-cell data" style="flex:1">
+      <div class="tm-label">vendas_detalhadas_book_info</div>
+      <div class="tm-sub">sell-out por loja · 90d</div>
+      <div class="tm-chips">
+        <span class="tm-chip">cnpj_loja</span>
+        <span class="tm-chip">grupo_economico</span>
+      </div>
+    </div>
+    <div class="tm-cell data" style="flex:.8">
+      <div class="tm-label">outras tabelas</div>
+      <div class="tm-sub">produtos · estoque · produção</div>
+      <div class="tm-chips">
+        <span class="tm-chip">products</span>
+        <span class="tm-chip">wms_stock</span>
+        <span class="tm-chip">stocks</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><span class="leg-dot" style="background:#97C459"></span>construído</span>
+    <span><span class="leg-dot" style="background:#EF9F27"></span>em progresso</span>
+    <span><span class="leg-dot" style="background:#ccc"></span>planejado</span>
+    <span><span class="leg-dot" style="background:#85B7EB"></span>infraestrutura</span>
+    <span><span class="leg-dot" style="background:#AFA9EC"></span>dados</span>
+    <span style="margin-left:auto;color:#bbb;">DarkSide BI v1 · 14/03/2026</span>
+  </div>
+
+</div>
+</body>
+</html>
